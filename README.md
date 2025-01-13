@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 ```
 API_KEY="<APIキー>"
-MODEL_ID="<gemini apiのモデルID>"
+MODEL_ID="gemini-1.5-flash" # 他の値でも大丈夫
 ```
 
 # Chat 画面を起動する
