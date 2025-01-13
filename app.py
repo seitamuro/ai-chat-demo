@@ -17,8 +17,9 @@ model = genai.GenerativeModel("gemini-1.5-flash", system_instruction="日本語�
 
 st.title("Gemini AI Chat Demo")
 
-uploaded_file = st.file_uploader("アップロードするファイルを選択してください", type=["png", "jpg", "jpeg"])
-
+image_exts = ["png", "jpg", "jpeg"]
+text_exts = ["csv", "txt"]
+uploaded_file = st.file_uploader("アップロードするファイルを選択してください", type=image_exts + text_exts)
 
 if "messages" not in st.session_state:
   st.session_state.messages = []
@@ -43,8 +44,14 @@ if prompt := st.chat_input("メッセージを入力してください"):
     # アップロードされたファイルの取得
     prompts = [prompt]
     if uploaded_file is not None:
-      image = PIL.Image.open(uploaded_file)
-      prompts.append(image)
+      file_ext = uploaded_file.name.split(".")[-1]
+      if file_ext in text_exts:
+        prompts.append(uploaded_file.read().decode())
+      elif file_ext in image_exts:
+        prompts.append(PIL.Image.open(uploaded_file))
+      else:
+        st.error("対応していないファイル形式です。")
+        st.stop()
     
     # ユーザーのメッセージから回答を生成する
     response = chat.send_message(prompts)
