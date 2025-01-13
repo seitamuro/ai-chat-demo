@@ -21,4 +21,7 @@ streamlit run app.py
 
 # 参考文献
 
-[Gemini API Documentation](https://ai.google.dev/gemini-api/docs/text-generation?hl=ja&lang=python)
+- [Google AI for Developers - Gemini API](https://ai.google.dev/gemini-api/docs/text-generation?hl=ja&lang=python)
+  - 基本的な Gemini API の呼び出し方
+- [Gemini で PDF ファイルを処理する](https://cloud.google.com/vertex-ai/generative-ai/docs/samples/generativeaionvertexai-gemini-pdf?hl=ja#generativeaionvertexai_gemini_pdf-python)
+  - Gemini に PDF ファイルを渡す方法
