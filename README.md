@@ -16,7 +16,7 @@ MODEL_ID="<gemini apiのモデルID>"
 # Chat 画面を起動する
 
 ```
-streamlit app.py
+streamlit run app.py
 ```
 
 # 参考文献
