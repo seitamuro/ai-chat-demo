@@ -3,6 +3,7 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 from utils.generate_history import generate_history
+import PIL.Image
 
 # 環境変数の読み込み
 load_dotenv()
@@ -15,6 +16,9 @@ genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash", system_instruction="日本語で会話を行ってください。")
 
 st.title("Gemini AI Chat Demo")
+
+uploaded_file = st.file_uploader("アップロードするファイルを選択してください", type=["png", "jpg", "jpeg"])
+
 
 if "messages" not in st.session_state:
   st.session_state.messages = []
@@ -35,9 +39,15 @@ if prompt := st.chat_input("メッセージを入力してください"):
   with st.chat_message("assistant"):
     message_placeholder = st.empty()
     full_response = ""
+
+    # アップロードされたファイルの取得
+    prompts = [prompt]
+    if uploaded_file is not None:
+      image = PIL.Image.open(uploaded_file)
+      prompts.append(image)
     
     # ユーザーのメッセージから回答を生成する
-    response = chat.send_message(prompt)
+    response = chat.send_message(prompts)
     for chunk in response:
       full_response += chunk.text
       message_placeholder.markdown(full_response + "...")
