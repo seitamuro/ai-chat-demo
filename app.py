@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 from utils.generate_history import generate_history
 import PIL.Image
+from audio_recorder_streamlit import audio_recorder
 
 # 環境変数の読み込み
 load_dotenv()
@@ -21,11 +22,19 @@ image_exts = ["png", "jpg", "jpeg"]
 text_exts = ["csv", "txt"]
 uploaded_file = st.file_uploader("アップロードするファイルを選択してください", type=image_exts + text_exts)
 
+
 if "messages" not in st.session_state:
   st.session_state.messages = []
 
 # チャットの開始
 chat = model.start_chat(history=generate_history(st.session_state.messages))
+
+# 録音ボタンの作成
+audio_bytes = audio_recorder()
+if st.button("録音を保存"):
+  with open("recorded_audio.wav", "wb") as f:
+    f.write(audio_bytes)
+  st.success("録音が保存されました。")
 
 for message in st.session_state.messages:
   with st.chat_message(message["role"]):
